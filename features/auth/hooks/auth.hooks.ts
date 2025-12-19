@@ -17,7 +17,7 @@ const useAuthDataDefine = () => {
     accessToken,
     isLoading,
     user,
-  } = useAuthStore();
+  } = useAuthStore((auth) => auth);
   const refetchQuery = (callBack: () => any) =>
     queryClient.refetchQueries({ queryKey: callBack() });
 
@@ -28,7 +28,7 @@ const useAuthDataDefine = () => {
       if (response.success) {
         // Use getState() directly in async functions to avoid closure issues
         // This ensures we always have access to the latest store state and functions
-        useAuthStore.getState().setAccessToken(response.data.token);
+        setAccessToken(response.data.token);
         // setUser(response.data.user);
         refetchQuery(() => ["getMe-user"]);
         console.log("------------------push to dashboard------------");

@@ -26,7 +26,8 @@ const LoginPage = () => {
   const [showPin, setShowPin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  const { login } = useAuth();
+  const { login, ...rest } = useAuth();
+  console.log("rest - loginPage.tsx -->", rest);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -107,7 +108,7 @@ const LoginPage = () => {
             <Heading1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight text-center">
               Welcome Back!
             </Heading1>
-            <Body className="text-lg sm:text-xl text-gray-300 mb-8 leading-relaxed text-center">
+            <Body className="text-lg sm:text-xl text-gray-300 mb-8 leading-relaxed text-center font-sans">
               Continue your journey to master Italian driving theory with our
               comprehensive study materials and expert guidance.
             </Body>
@@ -274,7 +275,7 @@ const LoginPage = () => {
 
               {/* Register Link */}
               <div className="text-center pt-4">
-                <Body className="text-gray-600 text-sm">
+                <Body className="text-gray-600 text-sm ">
                   Don&apos;t have an account?{" "}
                   <Link
                     href="/register"

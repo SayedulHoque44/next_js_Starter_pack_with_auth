@@ -6,7 +6,7 @@ import { IUser } from "@/features/User/interface/user.interface";
 
 const useAuthStore = create<IAuthStore>()(
   devtools(
-    persist<IAuthStore>(
+    persist<any>(
       (set) => ({
         user: null,
         setUser: (user: IUser) => set({ user }),
@@ -26,21 +26,26 @@ const useAuthStore = create<IAuthStore>()(
         // Use "partialize" when you want to control and minimize what gets persisted to storage
         // for security, privacy, or efficiency.
 
-        // partialize: (state) => {
-        //   return {
-        //     accessToken: state.accessToken,
-        //   };
-        // },
+        partialize: (state) => {
+          return {
+            accessToken: state.accessToken,
+          };
+        },
         // onRehydrateStorage is used with Zustand's persist middleware to run logic when the persisted state is rehydrated (restored) into the store.
         // It is especially useful for resetting or updating transient/UI state, such as loading flags, after the store is loaded from storage.
         // For example, here we ensure 'isLoading' is set to false when the store is rehydrated from localStorage.
-        onRehydrateStorage: (state) => {
-          if (state) {
-            state.setIsLoading(false);
-          }
+        onRehydrateStorage() {
+          return (state, error) => {
+            if (error) {
+              console.error("Error rehydrating auth store", error);
+            }
+            if (state) {
+              state.setIsLoading(false);
+            }
+          };
         },
         // Skip hydration errors in production
-        // skipHydration: false,
+        // skipHydration: true,
       }
     ),
     {
