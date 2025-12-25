@@ -10,6 +10,10 @@ const eslintConfig = defineConfig([
     rules: {
       "@typescript-eslint/no-explicit-any": "off", // disable error/warning for 'any'
       "no-explicit-any": "off", // if using base typescript eslint
+
+      // Disable unused variable warnings
+      "@typescript-eslint/no-unused-vars": "off", // disable unused variable warnings
+      "no-unused-vars": "off", // disable unused variable warnings for base eslint
     },
   },
   // Override default ignores of eslint-config-next.

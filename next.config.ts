@@ -3,6 +3,15 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+
+  // Ensure require-in-the-middle is bundled and not externalized
+  // This package is needed by Sentry/OpenTelemetry instrumentation
+  // By not including it in serverExternalPackages, it will be bundled properly
+  experimental: {
+    // Exclude require-in-the-middle from being externalized
+    // This ensures it's bundled with the application
+    serverComponentsExternalPackages: [],
+  },
 };
 
 export default withSentryConfig(nextConfig, {
@@ -40,5 +49,5 @@ export default withSentryConfig(nextConfig, {
       // Automatically tree-shake Sentry logger statements to reduce bundle size
       removeDebugLogging: true,
     },
-  }
+  },
 });
