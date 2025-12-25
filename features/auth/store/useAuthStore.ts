@@ -13,9 +13,11 @@ const useAuthStore = create<IAuthStore>()(
         accessToken: null,
         setAccessToken: (accessToken: string) => set({ accessToken }),
         isLoading: false,
+        hasHydrated: false,
         clearUser: () => set({ user: null }),
         clearAccessToken: () => set({ accessToken: null }),
         setIsLoading: (isLoading: boolean) => set({ isLoading }),
+        setHasHydrated: (hasHydrated: boolean) => set({ hasHydrated }),
       }),
       {
         name: "EBP_CLIENT_AUTH_STORE",
@@ -38,9 +40,20 @@ const useAuthStore = create<IAuthStore>()(
           return (state, error) => {
             if (error) {
               console.error("Error rehydrating auth store", error);
-            }
-            if (state) {
-              state.setIsLoading(false);
+              if (state) {
+                state.setHasHydrated(true);
+                state.setIsLoading(false);
+              }
+            } else {
+              if (state) {
+                // After rehydration, set loading to true if we have accessToken (will fetch user)
+                if (state.accessToken) {
+                  state.setIsLoading(true);
+                } else {
+                  state.setIsLoading(false);
+                }
+                state.setHasHydrated(true);
+              }
             }
           };
         },

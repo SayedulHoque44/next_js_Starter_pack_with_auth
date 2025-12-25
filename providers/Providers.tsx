@@ -28,10 +28,10 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <TanstackProvider>
       <AuthProvider>
-        <ThemeProvider>
-          {children}
-          <Toaster position="top-right" richColors />
-        </ThemeProvider>
+        {/* <ThemeProvider> */}
+        {children}
+        <Toaster position="top-right" richColors />
+        {/* </ThemeProvider> */}
       </AuthProvider>
     </TanstackProvider>
   );

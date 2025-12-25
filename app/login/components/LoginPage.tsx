@@ -27,7 +27,7 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const { login, ...rest } = useAuth();
-  console.log("rest - loginPage.tsx -->", rest);
+  // console.log("rest - loginPage.tsx -->", rest);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -59,7 +59,6 @@ const LoginPage = () => {
     formState: { errors, isSubmitting },
     setValue,
   } = useForm<LoginFormData>({
-    // @ts-expect-error - Type mismatch between Zod v3 and @hookform/resolvers types
     resolver: zodResolver(loginSchema),
     defaultValues: {
       phone: "1111111111",

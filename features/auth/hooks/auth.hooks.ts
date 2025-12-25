@@ -5,9 +5,12 @@ import { ILoginRequest, ILoginResponse } from "../interface/auth.interface";
 import AuthApi from "../api/auth.api";
 import UserHooks from "@/features/User/hooks/user.hooks";
 import { errorToast } from "@/utils/toast";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const useAuthDataDefine = () => {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const {
     setAccessToken,
     setUser,
@@ -24,7 +27,7 @@ const useAuthDataDefine = () => {
   const login = async (data: ILoginRequest): Promise<ILoginResponse | any> => {
     try {
       const response = await AuthApi.loginHandler(data);
-      console.log("response - auth.hooks.ts -->", response);
+      // console.log("response - auth.hooks.ts -->", response);
       if (response.success) {
         // Use getState() directly in async functions to avoid closure issues
         // This ensures we always have access to the latest store state and functions
@@ -32,6 +35,7 @@ const useAuthDataDefine = () => {
         // setUser(response.data.user);
         refetchQuery(() => ["getMe-user"]);
         console.log("------------------push to dashboard------------");
+        router.push("/dashboard");
       }
       return response;
     } catch (error: any) {
@@ -50,7 +54,7 @@ const useAuthDataDefine = () => {
     queryClient.clear();
   };
 
-  const { data: userData } = UserHooks.useGetUserQuery({
+  const { data: userData, isFetching } = UserHooks.useGetUserQuery({
     queryKey: ["getMe-user"],
     params: {
       deviceInfo: typeof window !== "undefined" ? navigator.userAgent : "",
@@ -60,15 +64,23 @@ const useAuthDataDefine = () => {
       onSuccess: (data) => {
         console.log("data", data);
         setUser(data.data);
+        setIsLoading(false);
       },
       onError: (error) => {
         // console.log("error", error);
         errorToast({ error: error });
+        setIsLoading(false);
       },
       retry: 2,
       retryDelay: 1000,
     },
   });
+
+  useEffect(() => {
+    if (isFetching && !!accessToken && typeof window !== "undefined") {
+      setIsLoading(true);
+    }
+  }, [isFetching, accessToken, setIsLoading]);
 
   return {
     refetchQuery,

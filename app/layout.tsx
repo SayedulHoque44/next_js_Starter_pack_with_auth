@@ -26,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <ConditionalProviders className={` ${lexend.className}  antialiased`}>
         {children}
       </ConditionalProviders>

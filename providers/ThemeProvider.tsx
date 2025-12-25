@@ -12,7 +12,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   const pathname = usePathname();
   const { setTheme } = useTheme();
   useEffect(() => {
-    if (!pathname.includes("/survey/response")) {
+    if (!pathname.includes("/dashboard")) {
       setTheme("light");
 
       document.documentElement.setAttribute("data-theme", "light");

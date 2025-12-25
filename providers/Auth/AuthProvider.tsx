@@ -7,7 +7,6 @@ import {
   ILoginResponse,
 } from "@/features/auth/interface/auth.interface";
 import { IUser } from "@/features/User/interface/user.interface";
-import useAuthStore from "@/features/auth/store/useAuthStore";
 
 export interface IAuthContext {
   refetchQuery: (callBack: () => any) => void;
@@ -27,12 +26,6 @@ export const AuthContext = createContext<IAuthContext | null>(null);
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const allContext = useAuthDataDefine();
   const pathName = usePathname();
-
-  // Manually rehydrate the store from localStorage when component mounts
-  useEffect(() => {
-    // This restores the persisted state from localStorage
-    // useAuthStore.persist.rehydrate();
-  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);

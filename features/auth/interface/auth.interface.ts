@@ -24,4 +24,6 @@ export interface IAuthStore {
   clearAccessToken: () => void;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
+  hasHydrated: boolean;
+  setHasHydrated: (hasHydrated: boolean) => void;
 }
